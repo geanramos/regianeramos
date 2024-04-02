@@ -8,6 +8,13 @@
     var GITHUB_API_URL = "https://api.github.com/repos/geanramos/regianeramos/issues/";
     var PATH_SEGMENTS_TO_SKIP = 0;
 
+    // Função para verificar se uma string é uma URL válida
+    function isValidUrl(url) {
+      // Regex para validar uma URL
+      var urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+      return urlPattern.test(url);
+    }
+
     // Função para redirecionar com base no número da issue
     function redirect() {
       // Obter o número da issue da URL
@@ -20,10 +27,13 @@
       fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-          // Verificar se a issue existe e possui um URL válido
-          if (data.html_url) {
-            // Redirecionar para o URL da issue
-            window.location.href = data.html_url;
+          // Obter o título da issue
+          var title = data.title;
+
+          // Verificar se o título é uma URL válida fora do GitHub
+          if (isValidUrl(title) && !title.startsWith("https://github.com/")) {
+            // Redirecionar para o URL do título da issue
+            window.location.href = title;
           } else {
             // Redirecionar para a página inicial
             window.location.href = "/";
