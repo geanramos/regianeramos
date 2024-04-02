@@ -9,9 +9,9 @@
   <h1>URL Shortener</h1>
   
   <script>
-    // Função para extrair a chave da URL
+    // Função para obter a chave da URL
     function extractKeyFromUrl() {
-      var url = window.location.pathname;
+      var url = window.location.href;
       var parts = url.split('/');
       return parts[parts.length - 1];
     }
@@ -19,13 +19,19 @@
     // Função para redirecionar para a URL longa correspondente à chave
     function redirect() {
       var key = extractKeyFromUrl();
+      var urls;
       
       // Requisição para carregar o arquivo JSON urls.json
-      fetch('urls.json')
-        .then(response => response.json())
-        .then(data => {
+      var request = new XMLHttpRequest();
+      request.open('GET', 'urls.json', true);
+      
+      request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+          // Sucesso na requisição
+          urls = JSON.parse(request.responseText);
+          
           // Busca pela URL longa correspondente à chave
-          var longUrl = data.urls.find(url => url.short === key)?.long;
+          var longUrl = urls.urls.find(url => url.short === key)?.long;
           
           // Se a URL longa for encontrada, redireciona para ela
           if (longUrl) {
@@ -33,8 +39,18 @@
           } else {
             alert("URL curta não encontrada.");
           }
-        })
-        .catch(error => console.error('Erro ao carregar URLs:', error));
+        } else {
+          // Erro na requisição
+          console.error("Erro ao carregar o arquivo JSON.");
+        }
+      };
+      
+      request.onerror = function() {
+        // Erro na conexão
+        console.error("Erro de conexão.");
+      };
+      
+      request.send();
     }
     
     // Redirecionar ao carregar a página
