@@ -74,6 +74,8 @@
             var urlEncurtada = window.location.href + identificador;
             // Exiba a URL encurtada no elemento "resultado"
             document.getElementById("resultado").innerHTML = "<p>URL encurtada: <a href='" + urlEncurtada + "' target='_blank'>" + urlEncurtada + "</a></p>";
+            // Redirecione para a URL original quando a URL encurtada for acessada
+            window.location.replace(urlLonga);
         }
     </script>
 </body>
