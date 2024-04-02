@@ -1,80 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encurtador de URL</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        .container {
-            max-width: 400px;
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Encurtador de URL</h2>
-        <div class="form-group">
-            <label for="url">URL Longa:</label>
-            <input type="text" id="url" placeholder="Insira a URL longa...">
-        </div>
-        <button class="btn" onclick="encurtarURL()">Encurtar</button>
-        <div id="resultado"></div>
-    </div>
-
-    <script>
-        function encurtarURL() {
-            var urlLonga = document.getElementById("url").value;
-            // Gere um identificador único para a URL encurtada
-            var identificador = Math.random().toString(36).substring(7);
-            // Combine a URL base do GitHub Pages com o identificador único
-            var urlEncurtada = window.location.href + identificador;
-            // Exiba a URL encurtada no elemento "resultado"
-            document.getElementById("resultado").innerHTML = "<p>URL encurtada: <a href='" + urlEncurtada + "' target='_blank'>" + urlEncurtada + "</a></p>";
-        }
-    </script>
+  <h1>URL Shortener</h1>
+  
+  <input type="text" id="shortUrlInput" placeholder="Digite a URL curta">
+  <button onclick="redirect()">Redirecionar</button>
+  
+  <script>
+    // Função para redirecionar para a URL longa correspondente à URL curta
+    function redirect() {
+      var shortUrl = document.getElementById("shortUrlInput").value;
+      
+      // Requisição para carregar o arquivo JSON urls.json
+      fetch('urls.json')
+        .then(response => response.json())
+        .then(data => {
+          // Busca pela URL longa correspondente à URL curta
+          var longUrl = data.urls.find(url => url.short === shortUrl)?.long;
+          
+          // Se a URL longa for encontrada, redireciona para ela
+          if (longUrl) {
+            window.location.href = longUrl;
+          } else {
+            alert("URL curta não encontrada.");
+          }
+        })
+        .catch(error => console.error('Erro ao carregar URLs:', error));
+    }
+  </script>
 </body>
 </html>
