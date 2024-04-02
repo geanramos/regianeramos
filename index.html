@@ -9,29 +9,24 @@
   <h1>URL Shortener</h1>
   
   <script>
-    // Função para obter a chave da URL
-    function extractKeyFromUrl() {
-      var url = window.location.href;
-      var parts = url.split('/');
-      return parts[parts.length - 1];
-    }
+    // Função para obter o valor do parâmetro "r" da URL
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
     
-    // Função para redirecionar para a URL longa correspondente à chave
+    // Função para redirecionar para a URL longa correspondente à URL curta
     function redirect() {
-      var key = extractKeyFromUrl();
-      var urls;
+      var shortUrl = getUrlParameter('r');
       
       // Requisição para carregar o arquivo JSON urls.json
-      var request = new XMLHttpRequest();
-      request.open('GET', 'urls.json', true);
-      
-      request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-          // Sucesso na requisição
-          urls = JSON.parse(request.responseText);
-          
-          // Busca pela URL longa correspondente à chave
-          var longUrl = urls.urls.find(url => url.short === key)?.long;
+      fetch('urls.json')
+        .then(response => response.json())
+        .then(data => {
+          // Busca pela URL longa correspondente à URL curta
+          var longUrl = data.urls.find(url => url.short === shortUrl)?.long;
           
           // Se a URL longa for encontrada, redireciona para ela
           if (longUrl) {
@@ -39,21 +34,11 @@
           } else {
             alert("URL curta não encontrada.");
           }
-        } else {
-          // Erro na requisição
-          console.error("Erro ao carregar o arquivo JSON.");
-        }
-      };
-      
-      request.onerror = function() {
-        // Erro na conexão
-        console.error("Erro de conexão.");
-      };
-      
-      request.send();
+        })
+        .catch(error => console.error('Erro ao carregar URLs:', error));
     }
     
-    // Redirecionar ao carregar a página
+    // Redirecionar ao carregar a página, se houver parâmetro "r" na URL
     window.onload = redirect;
   </script>
 </body>
