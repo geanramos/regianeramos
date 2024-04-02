@@ -9,24 +9,23 @@
   <h1>URL Shortener</h1>
   
   <script>
-    // Função para obter o valor do parâmetro "short" da URL
-    function getUrlParameter(name) {
-      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-      var results = regex.exec(location.search);
-      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
+    // Função para extrair a chave da URL
+    function extractKeyFromUrl() {
+      var url = window.location.pathname;
+      var parts = url.split('/');
+      return parts[parts.length - 1];
+    }
     
-    // Função para redirecionar para a URL longa correspondente à URL curta
+    // Função para redirecionar para a URL longa correspondente à chave
     function redirect() {
-      var shortUrl = getUrlParameter('short');
+      var key = extractKeyFromUrl();
       
       // Requisição para carregar o arquivo JSON urls.json
       fetch('urls.json')
         .then(response => response.json())
         .then(data => {
-          // Busca pela URL longa correspondente à URL curta
-          var longUrl = data.urls.find(url => url.short === shortUrl)?.long;
+          // Busca pela URL longa correspondente à chave
+          var longUrl = data.urls.find(url => url.short === key)?.long;
           
           // Se a URL longa for encontrada, redireciona para ela
           if (longUrl) {
@@ -38,7 +37,7 @@
         .catch(error => console.error('Erro ao carregar URLs:', error));
     }
     
-    // Redirecionar ao carregar a página, se houver parâmetro "short" na URL
+    // Redirecionar ao carregar a página
     window.onload = redirect;
   </script>
 </body>
