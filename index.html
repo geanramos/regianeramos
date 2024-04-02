@@ -7,19 +7,39 @@
 </head>
 <body>
   <h1>URL Shortener</h1>
-  <input type="text" id="longUrl" placeholder="Digite a URL longa">
-  <button onclick="encurtarURL()">Encurtar</button>
   
   <script>
-    function encurtarURL() {
-      var longUrl = document.getElementById("longUrl").value;
+    // Função para obter o valor do parâmetro "short" da URL
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+    
+    // Função para redirecionar para a URL longa correspondente à URL curta
+    function redirect() {
+      var shortUrl = getUrlParameter('short');
       
-      // Implemente o código para gerar um identificador único para a URL curta
-      var shortUrl = "abc123"; // Exemplo de URL curta
-      
-      // Redirecionar para a página com a URL curta gerada
-      window.location.href = "https://regiane.u1m.com.br/?short=" + shortUrl;
+      // Requisição para carregar o arquivo JSON urls.json
+      fetch('urls.json')
+        .then(response => response.json())
+        .then(data => {
+          // Busca pela URL longa correspondente à URL curta
+          var longUrl = data.urls.find(url => url.short === shortUrl)?.long;
+          
+          // Se a URL longa for encontrada, redireciona para ela
+          if (longUrl) {
+            window.location.href = longUrl;
+          } else {
+            alert("URL curta não encontrada.");
+          }
+        })
+        .catch(error => console.error('Erro ao carregar URLs:', error));
     }
+    
+    // Redirecionar ao carregar a página, se houver parâmetro "short" na URL
+    window.onload = redirect;
   </script>
 </body>
 </html>
