@@ -7,11 +7,19 @@
 </head>
 <body>
   <h1>URL Shortener</h1>
-  <label for="longUrl">Long URL:</label>
-  <input type="text" id="longUrl" name="longUrl">
-  <button onclick="shortenUrl()">Shorten</button>
-  <p>Shortened URL: <span id="shortenedUrl"></span></p>
-
-  <script src="shortener.js"></script>
+  <input type="text" id="longUrl" placeholder="Digite a URL longa">
+  <button onclick="encurtarURL()">Encurtar</button>
+  
+  <script>
+    function encurtarURL() {
+      var longUrl = document.getElementById("longUrl").value;
+      
+      // Implemente o código para gerar um identificador único para a URL curta
+      var shortUrl = "abc123"; // Exemplo de URL curta
+      
+      // Redirecionar para a página com a URL curta gerada
+      window.location.href = "https://geanramos.github.io/regianeramos/index.html?short=" + shortUrl;
+    }
+  </script>
 </body>
 </html>
