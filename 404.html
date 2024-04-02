@@ -1,78 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Carregando...</title>
-    <script>
-      /**
-       * Configuration goes here
-       */
-      // Format: https://api.github.com/repos/{owner}/{repo}/issues/
-      var GITHUB_ISSUES_LINK =
-        "https://api.github.com/repos/geanramos/regianeramos/issues/";
-      var PATH_SEGMENTS_TO_SKIP = 0;
+<head>
+  <meta charset="utf-8">
+  <title>Redirecionando...</title>
+  <script>
+    // Configuração: URL da API do GitHub e número de segmentos de caminho para pular
+    var GITHUB_API_URL = "https://api.github.com/repos/geanramos/regianeramos/issues/";
+    var PATH_SEGMENTS_TO_SKIP = 0;
 
-      /**
-       * DO NOT TOUCH ANYTHING BELOW THIS COMMENT UNLESS YOU KNOW WHAT YOU ARE DOING
-       */
-      function isUrl(url) {
-        // Regex from https://stackoverflow.com/a/3809435, with a modification to allow for TLDs of up to 24 characters
-        return /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,24}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)+$/.test(
-          url
-        );
-      }
+    // Função para redirecionar com base no número da issue
+    function redirect() {
+      // Obter o número da issue da URL
+      var issueNumber = window.location.pathname.split("/")[PATH_SEGMENTS_TO_SKIP + 1];
 
-      function redirect() {
-        var location = window.location;
-        var issueNumber = location.pathname.split("/")[
-          PATH_SEGMENTS_TO_SKIP + 1
-        ];
-        var homepage =
-          location.protocol +
-          "//" +
-          location.hostname +
-          (location.port ? ":" + location.port : "") +
-          "/" +
-          location.pathname.split("/")[PATH_SEGMENTS_TO_SKIP];
+      // Montar o URL da issue na API do GitHub
+      var apiUrl = GITHUB_API_URL + issueNumber;
 
-        var xhr = new XMLHttpRequest();
-
-        xhr.onload = function () {
-          try {
-            var payload = JSON.parse(xhr.response);
-            var message = payload.message;
-            var title = payload.title;
-
-            // Workaround IE 11 lack of support for new URL()
-            var url = document.createElement("a");
-            url.setAttribute("href", title);
-
-            // Invalid URLs includes invalid issue numbers, issue titles that are not URLs, and recursive destination URLs
-            var isInvalidUrl =
-              message === "Nao Encontrada" ||
-              !title ||
-              !isUrl(title) ||
-              url.hostname === location.hostname;
-
-            if (isInvalidUrl) {
-              location.replace(homepage);
-            } else {
-              location.replace(title);
-            }
-          } catch (e) {
-            location.replace(homepage);
+      // Fazer uma requisição para a API do GitHub
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Verificar se a issue existe e possui um URL válido
+          if (data.html_url) {
+            // Redirecionar para o URL da issue
+            window.location.href = data.html_url;
+          } else {
+            // Redirecionar para a página inicial
+            window.location.href = "/";
           }
-        };
+        })
+        .catch(error => {
+          console.error("Erro ao processar a requisição:", error);
+          // Redirecionar para a página inicial em caso de erro
+          window.location.href = "/";
+        });
+    }
 
-        xhr.onerror = function () {
-          location.replace(homepage);
-        };
-        xhr.open("GET", GITHUB_ISSUES_LINK + issueNumber);
-        xhr.send();
-      }
-
-      redirect();
-    </script>
-  </head>
-  <body></body>
+    // Chamar a função de redirecionamento ao carregar a página
+    redirect();
+  </script>
+</head>
+<body>
+</body>
 </html>
