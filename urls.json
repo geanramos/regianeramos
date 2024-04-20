@@ -1,5 +1,5 @@
 {
-  "encurtador": [
+"encurtador": [
 { "Id": "1", "Url": "https://www.youtube.com/results?search_query=autismo", "Title": "Dia Mundial de Conscientização do Autismo" },
 { "Id": "2", "Url": "https://pay.hotmart.com/W91098666M?checkoutMode=10&sck=regiane|blog", "Title": "Ebook: Pudim Perfeito" },
 { "Id": "gean", "Url": "https://gean.me/", "Title": "Gean Ramos" },
@@ -139,6 +139,5 @@
 { "Id": "ytdl-org", "Url": "https://github.com/ytdl-org/youtube-dl", "Title": "GitHub - ytdl-org/youtube-dl: Command-line program to download videos from YouTube.com and other video sites" },
 { "Id": "zod-", "Url": "https://aondebaixo.blogspot.com/?m=1", "Title": "Filmes e SÃ©ries Dublados em HD" },
 { "Id": "zw2x", "Url": "https://www.conrado.com.br/o-que-e-funil-de-vendas/", "Title": "O que Ã© um funil de vendas." },
-
-  ]
+]
 }
