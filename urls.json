@@ -1,9 +1,8 @@
 {
-  "urls": [
-    { "Id": "1", "Url": "https://www.youtube.com/results?search_query=autismo", "Title": "Dia Mundial de Conscientização do Autismo" },
-    { "Id": "2", "Url": "https://pay.hotmart.com/W91098666M?checkoutMode=10&sck=regiane|blog", "Title": "Ebook: Pudim Perfeito" },
-    { "Id": "gean", "Url": "https://gean.me/", "Title": "Gean Ramos" },
-
+  "encurtador": [
+{ "Id": "1", "Url": "https://www.youtube.com/results?search_query=autismo", "Title": "Dia Mundial de Conscientização do Autismo" },
+{ "Id": "2", "Url": "https://pay.hotmart.com/W91098666M?checkoutMode=10&sck=regiane|blog", "Title": "Ebook: Pudim Perfeito" },
+{ "Id": "gean", "Url": "https://gean.me/", "Title": "Gean Ramos" },
 { "Id": "01z-", "Url": "https://thestoriesccc.substack.com/p/a-primeira-de-todas", "Title": "https://thestoriesccc.substack.com/p/a-primeira-de-todas" },
 { "Id": "06ax", "Url": "https://linkr.bio/sahaalah", "Title": "Sahaalah Berkah Safar Linkr.Bio" },
 { "Id": "0iae", "Url": "https://gean.me/yt/zcpec1GJSuk", "Title": "Comunidade: Oney Araujo de ConteÃºdo" },
