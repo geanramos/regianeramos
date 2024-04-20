@@ -1,31 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL idener</title>
+  <title>URL Shortener</title>
 </head>
 <body>
-  <h1>URL idener</h1>
-  
-  <input type="text" id="idUrlInput" placeholder="Digite a URL curta">
+  <h1>URL Shortener</h1>
+
+  <input type="text" id="shortUrlInput" placeholder="Digite a URL curta">
   <button onclick="redirect()">Redirecionar</button>
-  
+
   <script>
-    // Função para redirecionar para a URL urla correspondente à URL curta
+    // Função para redirecionar para a URL longa correspondente à URL curta
     function redirect() {
-      var idUrl = document.getElementById("idUrlInput").value;
-      
+      var shortUrl = document.getElementById("shortUrlInput").value;
+
       // Requisição para carregar o arquivo JSON urls.json
       fetch('urls.json')
         .then(response => response.json())
         .then(data => {
-          // Busca pela URL urla correspondente à URL curta
-          var urlUrl = data.urls.find(url => url.id === idUrl)?.url;
-          
-          // Se a URL urla for encontrada, redireciona para ela
-          if (urlUrl) {
-            window.location.href = urlUrl;
+          // Busca pela URL longa correspondente à URL curta
+          var longUrl = data.urls.find(url => url.short === shortUrl)?.long;
+
+          // Se a URL longa for encontrada, redireciona para ela
+          if (longUrl) {
+            window.location.href = longUrl;
           } else {
             alert("URL curta não encontrada.");
           }
