@@ -9,37 +9,40 @@
   <img style="display: block; -webkit-user-select: none; background-color: #e6e6e6;" src="https://img6.wsimg.com/serpimg/img/solutionsimg/serp_animation_loader.gif" />
   
   <script>
-    // Função para obter o valor do parâmetro "r" da URL
-    function getUrlParameter(name) {
-      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-      var results = regex.exec(location.search);
-      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
-    
-    // Função para redirecionar para a URL urla correspondente à URL curta
-    function redirect() {
-      var idUrl = getUrlParameter('r');
-      
-      // Requisição para carregar o arquivo JSON urls.json
-      fetch('urls.json')
-        .then(response => response.json())
-        .then(data => {
-          // Busca pela URL urla correspondente à URL curta
-          var urlUrl = data.urls.find(url => url.id === idUrl)?.url;
-          
-          // Se a URL urla for encontrada, redireciona para ela
-          if (urlUrl) {
-            window.location.href = urlUrl;
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
+  function redirect() {
+    var shortId = getUrlParameter('r');
+
+    fetch('urls.json')
+      .then(response => response.json())
+      .then(data => {
+        var matchedUrl = data.Encurtador.find(item => item.Id === shortId);
+
+        if (matchedUrl) {
+          var longUrl = matchedUrl.Url;
+          var title = matchedUrl.Title;
+
+          // Redirecionar para a URL longa e exibir o título (se disponível)
+          if (longUrl) {
+            window.location.href = longUrl;
           } else {
-            alert("URL curta não encontrada.");
+            alert("URL longa não encontrada para a URL curta.");
           }
-        })
-        .catch(error => console.error('Erro ao carregar URLs:', error));
-    }
-    
-    // Redirecionar ao carregar a página, se houver parâmetro "r" na URL
-    window.onload = redirect;
-  </script>
+        } else {
+          alert("URL curta não encontrada.");
+        }
+      })
+      .catch(error => console.error('Erro ao carregar URLs:', error));
+  }
+
+  window.onload = redirect;
+</script>
+
 </body>
 </html>
