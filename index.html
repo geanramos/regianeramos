@@ -17,20 +17,20 @@
       return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     };
     
-    // Função para redirecionar para a URL longa correspondente à URL curta
+    // Função para redirecionar para a URL urla correspondente à URL curta
     function redirect() {
-      var shortUrl = getUrlParameter('r');
+      var idUrl = getUrlParameter('r');
       
       // Requisição para carregar o arquivo JSON urls.json
       fetch('urls.json')
         .then(response => response.json())
         .then(data => {
-          // Busca pela URL longa correspondente à URL curta
-          var longUrl = data.urls.find(url => url.short === shortUrl)?.long;
+          // Busca pela URL urla correspondente à URL curta
+          var urlUrl = data.urls.find(url => url.id === idUrl)?.url;
           
-          // Se a URL longa for encontrada, redireciona para ela
-          if (longUrl) {
-            window.location.href = longUrl;
+          // Se a URL urla for encontrada, redireciona para ela
+          if (urlUrl) {
+            window.location.href = urlUrl;
           } else {
             alert("URL curta não encontrada.");
           }
