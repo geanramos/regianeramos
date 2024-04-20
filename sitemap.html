@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de URLs</title>
+</head>
+<body>
+    <h1>Lista de URLs</h1>
+
+    <ul id="urlList"></ul>
+
+    <script>
+        // Função para carregar e exibir os dados da lista
+        async function loadUrlList() {
+            try {
+                const response = await fetch('urls.json');
+                const data = await response.json();
+
+                const urlListElement = document.getElementById('urlList');
+
+                // Limpar a lista antes de adicionar novos itens
+                urlListElement.innerHTML = '';
+
+                // Iterar sobre os dados e adicionar itens à lista
+                data.Encurtador.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `ID: ${item.Id} - URL: ${item.Url} - Título: ${item.Title}`;
+                    urlListElement.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar URLs:', error);
+                alert('Erro ao carregar URLs. Verifique o console para mais detalhes.');
+            }
+        }
+
+        // Chamar a função para carregar e exibir a lista quando a página carregar
+        window.onload = loadUrlList;
+    </script>
+</body>
+</html>
