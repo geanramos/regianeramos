@@ -1,6 +1,11 @@
 {
   "Encurtador": [
     {
+  "Id": "win7",
+  "Url": "https://drive.google.com/file/d/1qgVRbgdN7M0EJm0BXynAG-YR9CkX7j9M/view",
+  "Title": "Iso Windows 7 2023"
+    },
+    {
   "Id": "drive",
   "Url": "https://www.intel.com.br/content/www/br/pt/products/sku/49022/intel-core-i5450m-processor-3m-cache-2-40-ghz/downloads.html",
   "Title": "Processador Intel Core i5-450M 2.40 GHz"
